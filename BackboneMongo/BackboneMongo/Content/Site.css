@@ -1,0 +1,246 @@
+﻿body {
+	padding-top: 50px;
+	padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+	padding: 15px;
+	color: #3a3a3a;
+}
+
+.watermark {
+	color: gray;
+	font-style: italic;
+}
+
+.employee-container {
+	display: inline-block;
+	vertical-align: top;
+}
+
+#filter-container {
+	height: 60px;
+}
+
+.employee-item {
+	border: 1px solid #eaeaea;
+	background: -webkit-linear-gradient(whitesmoke, #bdbdbd);
+	background: -o-linear-gradient(whitesmoke, #bdbdbd);
+	background: -moz-linear-gradient(whitesmoke, #bdbdbd);
+	background: linear-gradient(whitesmoke, #bdbdbd);
+	transition: opacity .25s ease-in-out;
+	-moz-transition: opacity .25s ease-in-out;
+	-webkit-transition: opacity .25s ease-in-out;
+	border-radius: 5px;
+	padding: 20px;
+	display: inline-block;
+	margin-right: 15px;
+	width: 335px;
+	margin-bottom: 15px;
+	cursor: pointer;
+	height: 100px;
+}
+
+.employee-item:hover {
+	opacity: 0.7;
+}
+
+.employee-item.add-button div {
+	text-align: center;
+	font-size: 38px;
+	font-family: fantasy;
+}
+
+.employee-container span.name {
+	font-size: 24px;
+	font-weight: bold;
+	display: block;
+}
+
+.employee-container span.age {
+	color: gray;
+	font-style: italic;
+}
+
+.employee-details {
+	border: 1px solid white;
+	border-radius: 5px;
+	display: table;
+	padding: 20px;
+	margin-bottom: 15px;
+	width: 335px;
+	background-color: #e1e1e1;
+}
+
+.employee-form input, label,
+.employee-details label, .property, input {
+	float: left;
+}
+
+.employee-form label,
+.employee-details label {
+	width: 105px;
+	clear: left;
+	margin-bottom: 15px;
+}
+
+.employee-details .property:hover {
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+.animated {
+	-webkit-animation-duration: 0.5s;
+	animation-duration: 0.5s;
+	-webkit-animation-fill-mode: both;
+	animation-fill-mode: both;
+}
+
+form input[type="submit"] {
+	color: white;
+	text-shadow: 1px 1px 1px gray;
+	border:0 none;
+	cursor:pointer;
+	border-radius: 5px;
+	padding: 5px 71px;
+	background: -webkit-linear-gradient(#BDBDBD, #616161);
+	background: -o-linear-gradient(#BDBDBD, #616161);
+	background: -moz-linear-gradient(#BDBDBD, #616161);
+	background: linear-gradient(#BDBDBD, #616161);
+	margin-top: 15px;
+	box-shadow: 0px 1px 1px rgb(163, 162, 162);
+}
+
+form input[type="submit"]:hover {
+	background: -webkit-linear-gradient(#cbcbcb, #909090);
+	background: -o-linear-gradient(#cbcbcb, #909090);
+	background: -moz-linear-gradient(#cbcbcb, #909090);
+	background: linear-gradient(#cbcbcb, #909090);
+}
+
+form input[type="submit"].search-button {
+	margin: 0;
+	padding: 2px 21px;
+	margin-left: 10px;
+}
+
+form input#name {
+	width: 237px;
+}
+
+form input[type="text"], input[type="number"] {
+	border-radius: 3px;
+	border: 1px solid rgb(181, 181, 181);
+	box-shadow: inset 0px 0px 4px 0px rgb(203, 201, 201);
+	width: 174px;
+	padding-left: 5px;
+}
+
+.employee-container .delete-button {
+	display: block;
+	position: absolute;
+	margin-left: 310px;
+	margin-top: -110px;
+	font-size: 16px;
+	font-weight: bold;
+	color: rgb(108, 108, 108);
+	transform: scale(1.3,1.0);
+	cursor: pointer;
+}
+
+.employee-container .delete-button:hover {
+	color: inherit;
+}
+
+@-webkit-keyframes bounceInDown {
+	0% {
+		opacity: 0;
+		-webkit-transform: translateY(-2000px);
+	}
+
+	60% {
+		opacity: 1;
+		-webkit-transform: translateY(30px);
+	}
+
+	80% {
+		-webkit-transform: translateY(-10px);
+	}
+
+	100% {
+		-webkit-transform: translateY(0);
+	}
+}
+
+@keyframes bounceInDown {
+	0% {
+		opacity: 0;
+		transform: translateY(-2000px);
+	}
+
+	60% {
+		opacity: 1;
+		transform: translateY(30px);
+	}
+
+	80% {
+		transform: translateY(-10px);
+	}
+
+	100% {
+		transform: translateY(0);
+	}
+}
+
+@-webkit-keyframes zoomAndRotate {
+	0% { transform:rotate(0) scale(1) }
+	100% { transform:rotate(360deg) scale(0) }
+}
+
+@keyframes zoomAndRotate {
+	0% { transform:rotate(0) scale(1) }
+	100% { transform:rotate(360deg) scale(0) }
+}
+
+.bounceInDown {
+	-webkit-animation-name: bounceInDown;
+	animation-name: bounceInDown;
+}
+
+.zoomAndRotate {
+	-webkit-animation-name: zoomAndRotate;
+	animation-name: zoomAndRotate;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+	max-width: 280px;
+}
+
+/* styles for validation helpers */
+.field-validation-error {
+	color: #b94a48;
+}
+
+.field-validation-valid {
+	display: none;
+}
+
+input.input-validation-error {
+	border: 1px solid #b94a48;
+}
+
+input[type="checkbox"].input-validation-error {
+	border: 0 none;
+}
+
+.validation-summary-errors {
+	color: #b94a48;
+}
+
+.validation-summary-valid {
+	display: none;
+}
