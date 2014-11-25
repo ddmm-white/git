@@ -1,0 +1,197 @@
+﻿( function ( $ )
+{
+	var $employeeSupercontainer = $( "#employees" );
+
+	var Employee = Backbone.Model.extend( {
+		url: "Home/UpdateData",
+		//idAttribute: "MongoId",
+		defaults: {
+			firstName: '',
+			lastName: '',
+			age: 20,
+			description: ''
+		}
+	} );
+
+	var Directory = Backbone.Collection.extend( {
+		model: Employee
+	} );
+
+	var EmployeeView = Backbone.View.extend( {
+		className: "employee-container",
+		parent: '',
+		template: $( "#employeeTemplate" ).html(),
+		detailsTemplate: $( "#employeeDetailsTemplate" ).html(),
+		updateFormTemplate: $( "#employeeUpdateForm" ).html(),
+		events: {
+			"click .employee-item": "renderEmployeeDetails",
+			"click .property" : "editValue",
+			"click .delete-button" : "deleteEmployee",
+			//"blur input" : "hideField",
+			"submit" : "submit"
+		},
+		render: function ()
+		{
+			var tmpl = Handlebars.compile( this.template );
+			$( this.el ).html( tmpl( this.model.toJSON() ) );
+			return this;
+		},
+		renderEmployeeDetails: function () {
+			renderOrRemoveDetails(this.el, this.detailsTemplate, this.model);
+			return this;
+		},
+		deleteEmployee: function ( ev ) {
+			ev.stopPropagation();
+			var that = this;
+			if ( confirm( "Are you sure?" ) )
+			{
+				$.ajax( {
+					method: 'POST',
+					url: '/Home/DeleteData',
+					data: {
+						mongoId: this.model.id
+					},
+					success: function ()
+					{
+						$( that.el ).slideToggle( "slow" );
+					}
+				} );
+			}
+		},
+		editValue: function ( ev )
+		{
+			var id = $( ev.target ).attr( 'id' );
+			var $parent = $( ev.target ).closest( '.form-entry' );
+			var tmpl = Handlebars.compile( this.updateFormTemplate );
+			$parent.append( tmpl( this.model.toJSON() ) );
+			var $form = $parent.find( 'form' );
+			var $element;
+
+			$form.find( 'input' ).each( function () {
+				if ($(this).attr('id') != id)
+					$(this).attr('type', 'hidden');
+				else
+					$element = $(this).addClass('active');
+			} );
+
+			$( ev.target ).remove();
+			$form.show();
+			$element.focus();
+		},
+		hideField: function(ev) {
+			var $parent = $( ev.target ).closest( '.form-entry' );
+			var id = $(ev.target).attr('id');
+			var $form = $parent.find( 'form' );
+			var property = '<span id="' + id + '" class="property">' + this.model.get( id ) + '</span>';
+			$form.remove();
+			$parent.append(property);
+		},
+		submit: function( e ) {
+			e.preventDefault();
+			var newEmployee = new Employee(getFormData($(this.el).find('form')));
+			//newEmployee.url = "/Home/UpdateData";
+			newEmployee.save();
+			this.hideField($(this.el).find('.active'));
+		}
+	} );
+
+	var EmployeeAddView = Backbone.View.extend( {
+		className: "employee-container",
+		template: $( "#employeeAddTemplate" ).html(),
+		detailsTemplate: $( "#employeeAddFormTemplate" ).html(),
+		events: {
+			"click .add-button": "renderEmployeeAddForm",
+			"submit" : "submit"
+		},
+		render: function ()
+		{
+			$( this.el ).html( Handlebars.compile( this.template ) );
+			return this;
+		},
+		renderEmployeeAddForm: function() {
+			renderOrRemoveDetails(this.el, this.detailsTemplate);
+			return this;
+		},
+		submit: function( e ) {
+			e.preventDefault();
+			var that = this;
+			var newEmployee = new Employee( getFormData( $( this.el ).find('form') ) );
+			newEmployee.save();
+			var employeeView = new EmployeeView( {
+				model: newEmployee
+			} );
+			$( employeeView.render().el ).insertBefore( this.$el ).hide().slideToggle( "slow", function () {
+				renderOrRemoveDetails( that.$el );
+			} );
+		}
+	} );
+
+	var DirectoryView = Backbone.View.extend( {
+		el: $employeeSupercontainer,
+		initialize: function ( employees )
+		{
+			this.collection = new Directory( employees );
+			this.render();
+		},
+		render: function ()
+		{
+			var that = this;
+			_.each( this.collection.models, function ( item )
+			{
+				that.renderEmployee( item );
+			}, this );
+			var employeeAddView = new EmployeeAddView();
+			this.$el.append( employeeAddView.render().el );
+		},
+		renderEmployee: function ( item )
+		{
+			var employeeView = new EmployeeView( {
+				model: item
+			} );
+			this.$el.append( employeeView.render().el );
+		}
+	} );
+
+	function getFormData(form) {
+		var unindexed_array = form.serializeArray();
+			var indexed_array = {};
+
+			$.map( unindexed_array, function ( n, i )
+			{
+				indexed_array[n['name']] = n['value'];
+			} );
+
+			return indexed_array;
+	}
+
+	function renderOrRemoveDetails( context, detailsTemplate, model ) {
+		var $element = $( context ).find( '.employee-details' );
+
+		if ( $element.length > 0 )
+		{
+			$element.removeClass( 'bounceInDown' ).addClass( 'zoomAndRotate' );
+			$element.bind( 'webkitAnimationEnd', function ()
+			{
+				$element.remove();
+			} );
+			return;
+		}
+
+		var tmpl = Handlebars.compile( detailsTemplate );
+		$( context ).append( tmpl( model ? model.toJSON() : null ) );
+	}
+
+	function writeData()
+	{
+		$.ajax( {
+			url: "/Home/GetData",
+			success: function ( data )
+			{
+				var directory = new DirectoryView( data );
+			}
+		} );
+	}
+
+	writeData();
+
+}( jQuery ) );

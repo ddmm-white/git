@@ -1,0 +1,80 @@
+﻿@{
+	ViewBag.Title = "Home Page";
+}
+
+<div id="employees">
+	<div id="filter-container"></div>
+	<div id="main-container"></div>
+</div>
+
+<script id="employeeTemplate" type="text/x-handlebars-template">
+	<div class="employee-item">
+		<span class="name"><span id="firstName">{{firstName}}</span> <span id="lastName">{{lastName}}</span></span>
+		<span class="age"><span id="age">{{age}}</span></span>
+	</div>
+	<div class="delete-button">X</div>
+</script>
+
+<script id="employeeDetailsTemplate" type="text/x-handlebars-template">
+	<div class="employee-details bounceInDown animated">
+		<div class="form-entry">
+			<label>First Name:</label> <span id="firstName" class="property">{{#if firstName}}{{firstName}}{{else}}null{{/if}}</span>
+		</div>
+		<div class="form-entry">
+			<label>Last Name:</label> <span id="lastName" class="property">{{#if lastName}}{{lastName}}{{else}}null{{/if}}</span>
+		</div>
+		<div class="form-entry">
+			<label>Age:</label> <span id="age" class="property">{{#if age}}{{age}}{{else}}null{{/if}}</span>
+		</div>
+		<div class="form-entry">
+			<label>Description:</label> <span id="description" class="property">{{#if description}}{{description}}{{else}}null{{/if}}</span>
+		</div>
+	</div>
+</script>
+
+<script id="employeeUpdateForm" type="text/x-handlebars-template">
+	<form class="employee-form" style="display: none;">
+		<input id="MongoId" name="MongoId" type="hidden" value="{{MongoId}}" />
+		<input id="firstName" name="firstName" type="text" value="{{firstName}}" />
+		<input id="lastName" name="lastName" type="text" value="{{lastName}}" />
+		<input id="age" name="age" type="number" value="{{age}}" />
+		<input id="description" name="description" type="text" value="{{description}}" />
+	</form>
+</script>
+
+<script id="employeeAddTemplate" type="text/x-handlebars-template">
+	<div class="add-button employee-item">
+		<div>+</div>
+	</div>
+</script>
+
+<script id="employeeAddFormTemplate" type="text/x-handlebars-template">
+	<div class="employee-details add bounceInDown animated">
+		<form class="employee-form">
+			<div class="form-entry">
+				<label for="firstName">First Name: </label>
+				<input id="firstName" name="firstName" type="text" value="{{firstName}}" />
+			</div>
+			<div class="form-entry">
+				<label for="lastName">Last Name: </label>
+				<input id="lastName" name="lastName" type="text" value="{{lastName}}" />
+			</div>
+			<div class="form-entry">
+				<label for="age">Age: </label>
+				<input id="age" name="age" type="number" value="{{age}}" />
+			</div>
+			<div class="form-entry">
+				<label for="description">Description: </label>
+				<input id="description" name="description" type="text" value="{{description}}" />
+			</div>
+			<input type="submit" value="Save" />
+		</form>
+	</div>
+</script>
+
+<script id="filterTemplate" type="text/x-handlebars-template">
+	<form class="filter">
+		<input id="name" name="name" type="text" value="Search by name..." />
+		<input type="submit" class="search-button" value="Search" />
+	</form>
+</script>
